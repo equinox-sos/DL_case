@@ -1,0 +1,40 @@
+# Python cache
+__pycache__/
+
+# Python distribution / packaging
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+bin/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+
+# Virtual environments
+venv/
+env/
+.env/
+env.bak/
+env1/
+env2/
+
+# IDE specific files
+.vscode/
+.idea/
+
+# Dependency management
+pip-lock.txt
+pipenv-lock.json
+poetry.lock
+
+# Miscellaneous
+*.swp
+*~
+.DS_Store
