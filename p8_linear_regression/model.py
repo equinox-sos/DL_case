@@ -34,3 +34,6 @@ class PL_Model(pl.LightningModule):
 
     def configure_optimizers(self):
         return torch.optim.Adam(self.parameters(), lr=1e-3)
+    
+    def forecast(self, x):
+        return self.model(x)
