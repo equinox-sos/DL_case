@@ -1,6 +1,8 @@
 from dataset import Dataset_My
 
 
-test_data = Dataset_My()
-for i in range(len(test_data)):
-    print(test_data[i])
+train_data = Dataset_My(flag="train")
+val_data = Dataset_My(flag="val")
+test_data = Dataset_My(flag="test")
+
+print(len(train_data), len(val_data), len(test_data))
