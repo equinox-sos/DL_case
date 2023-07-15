@@ -11,6 +11,8 @@ train_dataloader = DataLoader(dataset=train_data, batch_size=32)
 val_dataloader = DataLoader(dataset=val_data, batch_size=32)
 test_dataloader = DataLoader(dataset=test_data, batch_size=32)
 
-model = PL_Model()
+in_size, out_size = train_data.getsize()
+
+model = PL_Model(insize=in_size, outsize=out_size)
 trainer = Trainer(max_epochs=50)
 trainer.fit(model=model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)

@@ -26,12 +26,18 @@ class Dataset_My(Dataset):
         data = data[board_l[ind]:board_r[ind]]    
         self.l = len(data)
 
-        self.data_y = torch.tensor(data[target].values)
-        self.data_x = torch.tensor(data.drop(columns=target, axis=1).values)
+        self.data_y = torch.tensor(data[target].values).float()
+        self.data_x = torch.tensor(data.drop(columns=target, axis=1).values).float()
+
+        self.in_size = len(self.data_x[0])
+        self.out_size = len(self.data_y[0])
 
     def __getitem__(self, index):
         return self.data_x[index], self.data_y[index]
 
     def __len__(self):
         return self.l
+    
+    def getsize(self):
+        return self.in_size, self.out_size
 
