@@ -32,8 +32,17 @@ class PL_Model(pl.LightningModule):
         self.log("val_loss", loss)
         return loss
 
+    def test_step(self, batch, batch_idx):
+        x, y = batch
+        y_hat = self.model(x)
+        loss = F.mse_loss(y, y_hat)
+        acc = (torch.abs(y - y_hat) / y).sum(dim=0)
+        self.log("acc", acc)
+        return {"test_loss": loss, "acc": acc}
+
     def configure_optimizers(self):
         return torch.optim.Adam(self.parameters(), lr=1e-3)
     
     def forecast(self, x):
         return self.model(x)
+    
