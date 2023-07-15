@@ -21,12 +21,16 @@ class PL_Model(pl.LightningModule):
     def training_step(self, batch, batch_idx):
         x, y = batch
         y_hat = self.model(x)
-        return F.mse_loss(y, y_hat)
+        loss = F.mse_loss(y, y_hat)
+        self.log("train_loss", loss)
+        return loss
 
     def validation_step(self, batch, batch_idx):
         x, y = batch
         y_hat = self.model(x)
-        return F.mse_loss(y, y_hat)
+        loss = F.mse_loss(y, y_hat)
+        self.log("val_loss", loss)
+        return loss
 
     def configure_optimizers(self):
         return torch.optim.Adam(self.parameters(), lr=1e-3)
