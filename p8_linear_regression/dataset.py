@@ -4,7 +4,7 @@ import pandas as pd
 
 
 class Dataset_My(Dataset):
-    def __init__(self, path=r'../dataset/boston_housing_data.csv', target=['MEDV'], flag="train", board=[0.7, 0.2, 0.1]):
+    def __init__(self, path=r'../dataset/boston_housing_data/train_dataset.csv', target=['PRICE'], flag="train", board=[0.7, 0.2, 0.1]):
         super(Dataset_My, self).__init__()
         data = pd.read_csv(path)
         # drop the nan value of the MEDA columns
@@ -41,3 +41,22 @@ class Dataset_My(Dataset):
     def getsize(self):
         return self.in_size, self.out_size
 
+
+class Test_My(Dataset):
+    def __init__(self, path=r'../dataset/boston_housing_data/test_dataset.csv'):
+        super(Test_My, self).__init__()
+        data = pd.read_csv(path)
+        # drop the nan value of the MEDA columns
+        data = data.dropna(subset=[data.columns[-1]])
+        # fill the nan value with 0
+        data = data.fillna(0)
+
+        self.l = len(data)
+        col = data.columns[1:]
+        self.data_x = torch.tensor(data[col].values).float()
+
+    def __getitem__(self, index):
+        return self.data_x[index]
+
+    def __len__(self):
+        return self.l

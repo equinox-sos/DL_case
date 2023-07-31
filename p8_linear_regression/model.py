@@ -41,7 +41,7 @@ class PL_Model(pl.LightningModule):
         return {"test_loss": loss, "acc": acc}
 
     def configure_optimizers(self):
-        return torch.optim.Adam(self.parameters(), lr=1e-3)
+        return torch.optim.Adam(self.parameters(), lr=1e-5)
     
     def forecast(self, x):
         return self.model(x)
