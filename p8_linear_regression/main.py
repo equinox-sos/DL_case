@@ -3,6 +3,7 @@ from dataset import Dataset_My, Test_My
 from model import PL_Model
 from pytorch_lightning.trainer import Trainer
 from pytorch_lightning.loggers import TensorBoardLogger
+from pytorch_lightning.callbacks import ModelCheckpoint
 import matplotlib.pyplot as plt
 import pandas as pd
 
@@ -18,26 +19,35 @@ test_dataloader = DataLoader(dataset=test_data, batch_size=16)
 
 in_size, out_size = train_data.getsize()
 
+checkpoint = ModelCheckpoint(
+    monitor="val_loss", 
+    save_top_k=1, 
+    mode="min", 
+    save_last=True,
+)
+
 model = PL_Model(insize=in_size, outsize=out_size)
 trainer = Trainer(
     max_epochs=10000, 
     logger=log, 
     log_every_n_steps=5, 
-    
+    callbacks=[checkpoint]
     )
+
 trainer.fit(
     model=model, 
     train_dataloaders=train_dataloader, 
     val_dataloaders=val_dataloader, 
-    ckpt_path=r'./log/lightning_logs/version_11/checkpoints/epoch=9999-step=200000.ckpt'
+    ckpt_path=r'./log/lightning_logs/version_29/checkpoints/last.ckpt'
     )
 
 trainer.test(model, dataloaders=test_dataloader)
 
+bestmodel = PL_Model.load_from_checkpoint(checkpoint_path=checkpoint.best_model_path, insize=in_size, outsize=out_size)
 y = []
 index = []
 for i in range(len(pre_data)):
-    y.append(model.forecast(pre_data[i]).item())
+    y.append(bestmodel.forecast(pre_data[i]).item())
     index.append("id_" + str(i + 1))
 
 data_pd = pd.DataFrame()

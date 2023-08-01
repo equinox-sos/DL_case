@@ -5,9 +5,18 @@ import torch.nn.functional as F
 
 
 class Model(nn.Module):
-    def __init__(self, insize, outsize):
+    def __init__(self, insize, outsize, hidden=64):
         super(Model, self).__init__()
-        self.l1 = nn.Linear(insize, outsize)
+        
+        self.l1 = nn.Sequential(
+            nn.Linear(insize, hidden), 
+            nn.GELU(), 
+            nn.Linear(hidden, hidden), 
+            nn.GELU(), 
+            nn.Linear(hidden, hidden), 
+            nn.GELU(), 
+            nn.Linear(hidden, outsize) 
+        )
 
     def forward(self, x):
         return self.l1(x)
